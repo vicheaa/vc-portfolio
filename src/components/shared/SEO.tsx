@@ -1,5 +1,4 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
 
 interface SEOProps {
   title?: string;
@@ -15,13 +14,13 @@ export const SEO: React.FC<SEOProps> = ({
   description = "A personal portfolio showcasing projects, blog posts, and hobbies",
   keywords = [],
   image = "/og-image.jpg",
-  url = window.location.href,
+  url = typeof window !== "undefined" ? window.location.href : "",
   type = "website",
 }) => {
   const fullTitle = title === "Portfolio" ? title : `${title} | Portfolio`;
 
   return (
-    <Helmet>
+    <>
       {/* Basic metadata */}
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
@@ -41,6 +40,6 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-    </Helmet>
+    </>
   );
 };
