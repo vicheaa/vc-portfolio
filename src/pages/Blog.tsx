@@ -27,7 +27,8 @@ export const Blog: React.FC = () => {
     <>
       <SEO
         title="Blog"
-        description="Read my thoughts on web development, programming, and technology"
+        description="Read Vichea's thoughts on web development, programming tutorials, Laravel, React, and technology insights"
+        keywords={["blog", "programming", "tutorials", "Laravel", "React", "TypeScript"]}
       />
 
       <main className="flex-1 py-12">

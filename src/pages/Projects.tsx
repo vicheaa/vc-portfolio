@@ -29,7 +29,8 @@ export const Projects: React.FC = () => {
     <>
       <SEO
         title="Projects"
-        description="Explore my portfolio of web development projects and applications"
+        description="Explore Vichea's portfolio of web development projects, applications, and open source contributions"
+        keywords={["projects", "web development", "applications", "open source"]}
       />
 
       <main className="flex-1 py-12">

@@ -12,7 +12,8 @@ export const Hobbies: React.FC = () => {
     <>
       <SEO
         title="Hobbies"
-        description="Discover my personal interests and hobbies"
+        description="Discover Vichea's personal interests, hobbies, and creative pursuits beyond coding"
+        keywords={["hobbies", "interests", "photography", "creative"]}
       />
 
       <main className="flex-1 py-12">

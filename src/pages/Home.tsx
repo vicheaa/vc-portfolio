@@ -1,245 +1,227 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { SEO } from "@/components/shared/SEO";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { useProjects } from "@/hooks/useProjects";
 import { usePosts } from "@/hooks/usePosts";
-import { useHobbies } from "@/hooks/useHobbies";
-import {
-  ProjectCardSkeleton,
-  BlogCardSkeleton,
-} from "@/components/ui/LoadingSkeleton";
 import { formatDate } from "@/lib/utils";
+import { useTheme } from "@/context/ThemeContext";
+import { Moon, SquareCode, Sun } from "lucide-react";
 
 export const Home: React.FC = () => {
-  const { data: projects, isLoading: projectsLoading } = useProjects({
-    featured: true,
-  });
   const { data: posts, isLoading: postsLoading } = usePosts();
-  const { data: hobbies, isLoading: hobbiesLoading } = useHobbies();
+  const { theme, toggleTheme } = useTheme();
+  const [activeTab, setActiveTab] = useState<"writing" | "favorites">("writing");
 
-  const featuredProjects = projects?.slice(0, 3) || [];
-  const featuredPosts = posts?.slice(0, 2) || [];
-  const featuredHobbies = hobbies?.slice(0, 2) || [];
+  const recentPosts = posts?.slice(0, 5) || [];
 
   return (
     <>
       <SEO
         title="Home"
-        description="Welcome to my portfolio showcasing my projects, blog posts, and hobbies"
+        description="Welcome to Saro Sereyvichea's portfolio - Full Stack Developer from Cambodia building beautiful web applications"
+        keywords={["portfolio", "home", "developer portfolio"]}
       />
 
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-b from-primary-50 to-white dark:from-gray-800 dark:to-gray-900 py-20">
-          <div className="container">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center max-w-3xl mx-auto"
-            >
-              <div className="mb-8">
-                <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white text-5xl font-bold">
-                  P
+      <main className="flex-1 py-12">
+        <div className="container max-w-2xl mx-auto px-6">
+          {/* Profile Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+
+            <div className="flex items-center gap-6">
+              {/* Avatar */}
+              <div>
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white text-lg font-bold overflow-hidden">
+                  {/* <span>V</span> */}
+                  <SquareCode className="w-6 h-6" />
                 </div>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-                Hi, I'm Your Name
-              </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-                Full Stack Developer | Tech Enthusiast | Creative Thinker
-              </p>
-              <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                I build innovative web applications and share my knowledge
-                through writing. Explore my work, read my thoughts, and discover
-                my passions.
-              </p>
-              <div className="flex gap-4 justify-center">
-                <Link
-                  to="/projects"
-                  className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
-                >
-                  View Projects
-                </Link>
-                <Link
-                  to="/about"
-                  className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
-                >
-                  About Me
-                </Link>
-              </div>
-            </motion.div>
-          </div>
-        </section>
 
-        {/* Featured Projects */}
-        <section className="py-16 bg-white dark:bg-gray-900">
-          <div className="container">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Featured Projects
-              </h2>
-              <Link
-                to="/projects"
-                className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
-              >
-                View All →
-              </Link>
+              {/* Name */}
+              <div>
+                <h1 className="khmer-font text-xl font-medium text-gray-900 dark:text-white mb-1">
+                  សារូ សិរីវិជ្ជា
+                </h1>
+                <h1>SARO SEREYVICHEA</h1>
+              </div>
             </div>
 
-            {projectsLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <ProjectCardSkeleton />
-                <ProjectCardSkeleton />
-                <ProjectCardSkeleton />
-              </div>
-            ) : (
+            {/* Navigation */}
+            <div className="flex items-center gap-6 mt-6 mb-10">
+              <button
+                onClick={() => setActiveTab("writing")}
+                className={`text-sm font-medium transition-colors ${
+                  activeTab === "writing"
+                    ? "text-gray-900 dark:text-white"
+                    : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                }`}
+              >
+                Writing
+              </button>
+              <button
+                onClick={() => setActiveTab("favorites")}
+                className={`text-sm font-medium transition-colors ${
+                  activeTab === "favorites"
+                    ? "text-gray-900 dark:text-white"
+                    : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                }`}
+              >
+                Favorites
+              </button>
+              <button
+                onClick={toggleTheme}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                aria-label="Toggle dark mode"
+              >
+                {theme === "dark" ? <Sun size={16}/> : <Moon size={16}/>}
+              </button>
+            </div>
+
+            {/* Bio Paragraphs */}
+            <div className="space-y-6 text-gray-700 dark:text-gray-300 leading-relaxed text-[15px] text-justify">
+              <p>
+                I'm a full-stack developer building{" "}
+                <a href="#" className="text-gray-900 dark:text-white underline decoration-1 underline-offset-2 italic font-medium hover:text-primary-600 dark:hover:text-primary-400">
+                  web applications
+                </a>{" "}
+                and{" "}
+                <a href="#" className="text-gray-900 dark:text-white underline decoration-1 underline-offset-2 italic font-medium hover:text-primary-600 dark:hover:text-primary-400">
+                  digital products
+                </a>
+                . Over the past years, I've focused on creating beautiful software that people love to use.
+              </p>
+
+              <p>
+                I regularly{" "}
+                <Link to="/blog" className="text-gray-900 dark:text-white underline decoration-1 underline-offset-2 italic font-medium hover:text-primary-600 dark:hover:text-primary-400">
+                  write
+                </Link>{" "}
+                about my development philosophy, approach to building products, and hard-won lessons from my journey as a developer. These essays are my way of thinking through challenges and sharing what I've learned along the way.
+              </p>
+
+              <p>
+                When I'm not coding, I love exploring{" "}
+                <Link to="/hobbies" className="text-gray-900 dark:text-white underline decoration-1 underline-offset-2 italic font-medium hover:text-primary-600 dark:hover:text-primary-400">
+                  photography
+                </Link>{" "}
+                and capturing everyday moments. There's something special about slowing down and observing the world around us.
+              </p>
+
+              <p>
+                Always open to interesting conversations about design, startups, and technology.{" "}
+                <Link to="/about" className="text-gray-900 dark:text-white underline decoration-1 underline-offset-2 italic font-medium hover:text-primary-600 dark:hover:text-primary-400">
+                  Say hello
+                </Link>{" "}
+                or follow me on{" "}
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white underline decoration-1 underline-offset-2 italic font-medium hover:text-primary-600 dark:hover:text-primary-400">
+                  GitHub
+                </a>
+                ,{" "}
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white underline decoration-1 underline-offset-2 italic font-medium hover:text-primary-600 dark:hover:text-primary-400">
+                  X
+                </a>
+                , or{" "}
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white underline decoration-1 underline-offset-2 italic font-medium hover:text-primary-600 dark:hover:text-primary-400">
+                  LinkedIn
+                </a>
+                .
+              </p>
+            </div>
+
+            {/* Colored Dots Divider */}
+            <div className="flex justify-center gap-2 my-12">
+              <div className="w-2 h-2 rounded-full bg-red-500"></div>
+              <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+              <div className="w-2 h-2 rounded-full bg-green-500"></div>
+            </div>
+
+            {/* Blog Posts List */}
+            {activeTab === "writing" && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                transition={{ duration: 0.3 }}
+                className="space-y-4"
               >
-                {featuredProjects.map((project, index) => (
-                  <motion.div
-                    key={project.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 * index }}
-                  >
-                    <Link to={`/projects/${project.slug}`}>
-                      <Card hover className="h-full p-6">
-                        {project.images[0] && (
-                          <img
-                            src={project.images[0]}
-                            alt={project.title}
-                            className="w-full h-48 object-cover rounded-lg mb-4"
-                          />
-                        )}
-                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                          {project.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-                          {project.description}
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {project.tags.slice(0, 3).map((tag) => (
-                            <Badge key={tag} variant="primary">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      </Card>
+                {postsLoading ? (
+                  <div className="space-y-4">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="flex justify-between items-center py-2">
+                        <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-48 animate-pulse"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20 animate-pulse"></div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  recentPosts.map((post) => (
+                    <Link
+                      key={post.id}
+                      to={`/blog/${post.slug}`}
+                      className="flex justify-between items-start gap-4 py-3 group"
+                    >
+                      <span className="text-gray-900 dark:text-white font-medium group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors flex-1">
+                        {post.title}
+                      </span>
+                      <span className="text-sm text-gray-400 dark:text-gray-500 whitespace-nowrap shrink-0 text-right">
+                        {formatDate(post.publish_date)}
+                      </span>
                     </Link>
-                  </motion.div>
-                ))}
+                  ))
+                )}
+
+                {recentPosts.length > 0 && (
+                  <Link
+                    to="/blog"
+                    className="inline-block mt-4 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+                  >
+                    View all posts →
+                  </Link>
+                )}
               </motion.div>
             )}
-          </div>
-        </section>
 
-        {/* Featured Blog Posts */}
-        <section className="py-16 bg-gray-50 dark:bg-gray-800">
-          <div className="container">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Latest Blog Posts
-              </h2>
-              <Link
-                to="/blog"
-                className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
+            {/* Favorites Tab */}
+            {activeTab === "favorites" && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-4"
               >
-                View All →
-              </Link>
-            </div>
-
-            {postsLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <BlogCardSkeleton />
-                <BlogCardSkeleton />
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {featuredPosts.map((post) => (
-                  <Link key={post.id} to={`/blog/${post.slug}`}>
-                    <Card hover className="h-full overflow-hidden">
-                      {post.featured_image && (
-                        <img
-                          src={post.featured_image}
-                          alt={post.title}
-                          className="w-full h-48 object-cover"
-                        />
-                      )}
-                      <div className="p-6">
-                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                          {post.title}
-                        </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
-                          {formatDate(post.publish_date)}
-                        </p>
-                        <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                          {post.excerpt}
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {post.tags.slice(0, 3).map((tag) => (
-                            <Badge key={tag}>{tag}</Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
+                <Link
+                  to="/projects"
+                  className="flex justify-between items-center py-2 group"
+                >
+                  <span className="text-gray-900 dark:text-white font-medium group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                    My Projects
+                  </span>
+                  <span className="text-sm text-gray-400 dark:text-gray-500">→</span>
+                </Link>
+                <Link
+                  to="/hobbies"
+                  className="flex justify-between items-center py-2 group"
+                >
+                  <span className="text-gray-900 dark:text-white font-medium group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                    My Hobbies
+                  </span>
+                  <span className="text-sm text-gray-400 dark:text-gray-500">→</span>
+                </Link>
+                <Link
+                  to="/about"
+                  className="flex justify-between items-center py-2 group"
+                >
+                  <span className="text-gray-900 dark:text-white font-medium group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                    About Me
+                  </span>
+                  <span className="text-sm text-gray-400 dark:text-gray-500">→</span>
+                </Link>
+              </motion.div>
             )}
-          </div>
-        </section>
-
-        {/* Featured Hobbies */}
-        <section className="py-16 bg-white dark:bg-gray-900">
-          <div className="container">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-                My Hobbies
-              </h2>
-              <Link
-                to="/hobbies"
-                className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
-              >
-                View All →
-              </Link>
-            </div>
-
-            {hobbiesLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <BlogCardSkeleton />
-                <BlogCardSkeleton />
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {featuredHobbies.map((hobby) => (
-                  <Card key={hobby.id} hover className="p-6">
-                    {hobby.images[0] && (
-                      <img
-                        src={hobby.images[0]}
-                        alt={hobby.title}
-                        className="w-full h-48 object-cover rounded-lg mb-4"
-                      />
-                    )}
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                      {hobby.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      {hobby.description}
-                    </p>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
+          </motion.div>
+        </div>
       </main>
     </>
   );
